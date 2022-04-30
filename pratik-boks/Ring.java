@@ -4,6 +4,8 @@
  */
 package pratik.boks;
 
+import java.util.*;
+
 /**
  *
  * @author BozdemirHome
@@ -22,15 +24,32 @@ public class Ring {
     }
 
     public void run() {
-
+ 
+         Random ran = new Random();
+         int rndNumber = ran.nextInt(1,3);
+        
         if (checkWeight()) {
             while (f1.health > 0 && f2.health > 0) {
                 System.out.println("======== YENİ ROUND ===========");
-                f2.health = f1.hit(f2);
+                if (rndNumber==1) {
+                    f2.health = f1.hit(f2);
+                }
+                else
+                {
+                    f1.health = f2.hit(f1);
+                }
+                
                 if (isWin()){
                     break;
                 }
-                f1.health = f2.hit(f1);
+                 if (rndNumber==2) {
+                    f2.health = f1.hit(f2);
+                }
+                else
+                {
+                    f1.health = f2.hit(f1);
+                }
+                
                 if (isWin()){
                     break;
                 }

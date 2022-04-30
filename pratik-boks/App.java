@@ -3,8 +3,13 @@
  */
 package pratik.boks;
 
+import java.util.Random;
+
 public class App {
     public static void main(String[] args) {
-        
+      Fighter marc = new Fighter("Marc" , 20 , 90, 90, 0);
+      Fighter alex = new Fighter("Alex" , 25 , 95, 100, 0);
+      Ring r = new Ring(marc, alex , 90 , 100);
+      r.run();
     }
 }
