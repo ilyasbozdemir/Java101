@@ -27,7 +27,8 @@ public class Student {
         calcAvarage();
         this.isPass = false;
     }
-      public void addBulkExamNote(int mat, int fizik, int kimya) {
+      
+     public void addBulkExamNote(int mat, int fizik, int kimya) {
 
         if (mat >= 0 && mat <= 100) {
             this.mat.note = mat;
@@ -42,7 +43,23 @@ public class Student {
         }
 
     }
+    public void addBulkExamVerbalNote(int mat, int fizik, int kimya) {
 
+        if (mat >= 0 && mat <= 100) {
+            this.mat.verbalNote = mat;
+        }
+
+        if (fizik >= 0 && fizik <= 100) {
+            this.fizik.verbalNote = fizik;
+        }
+
+        if (kimya >= 0 && kimya <= 100) {
+            this.kimya.verbalNote = kimya;
+        }
+
+    }
+     
+     
     public void isPass() {
         if (this.mat.note == 0 || this.fizik.note == 0 || this.kimya.note == 0) {
             System.out.println("Notlar tam olarak girilmemiş");
@@ -59,7 +76,11 @@ public class Student {
     }
 
     public void calcAvarage() {
-        this.avarage = (this.fizik.note + this.kimya.note + this.mat.note) / 3;
+        var fizikNotu=(this.fizik.note*0.80)+(this.fizik.verbalNote*0.20);        
+        var kimyaNotu=(this.kimya.note*0.80)+(this.kimya.verbalNote*0.20); 
+        var matNotu=(this.mat.note*0.80)+(this.mat.verbalNote*0.20); 
+
+        this.avarage = (fizikNotu + kimyaNotu + matNotu) / 3;
     }
 
     public boolean isCheckPass() {

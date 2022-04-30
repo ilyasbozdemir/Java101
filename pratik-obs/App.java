@@ -6,7 +6,8 @@ package pratik.obs;
 public class App {
  
     public static void main(String[] args) {
-       Course mat = new Course("Matematik", "MAT101", "MAT");
+        
+        Course mat = new Course("Matematik", "MAT101", "MAT");
         Course fizik = new Course("Fizik", "FZK101", "FZK");
         Course kimya = new Course("Kimya", "KMY101", "KMY");
 
@@ -20,14 +21,18 @@ public class App {
 
         Student s1 = new Student("İnek Şaban", 4, "140144015", mat, fizik, kimya);
         s1.addBulkExamNote(50,20,40);
+        s1.addBulkExamVerbalNote(60,70,55);
         s1.isPass();
 
         Student s2 = new Student("Güdük Necmi", 4, "2211133", mat, fizik, kimya);
         s2.addBulkExamNote(100,50,40);
+        s2.addBulkExamVerbalNote(60,65,75);
         s2.isPass();
 
         Student s3 = new Student("Hayta İsmail", 4, "221121312", mat, fizik, kimya);
         s3.addBulkExamNote(50,20,40);
+        s3.addBulkExamVerbalNote(45,80,95);
         s3.isPass();
+        
     }
 }

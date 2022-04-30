@@ -13,7 +13,9 @@ public class Course {
     String name;
     String code;
     String prefix;
-    int note;
+    int note;    
+    int verbalNote;
+
 
     public Course(String name, String code, String prefix) {
         this.name = name;
