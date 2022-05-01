@@ -1,35 +1,18 @@
-
-/*
-Oyun Kuralları :
-Oyun metin tabanlıdır.
-Çift boyutlu diziler üzerinden oynanmalı ve MineSweeper sınıfı içerisinde tasarlanmalı.
-Matris boyutunu yani satır ve sütun sayısını kullanıcı belirlemeli.
-Diziye ait eleman sayısının çeyreği (elemanSayisi / 4) kadar rastgele mayın yerleştirilmeli. 
-Örneğin dizi 4x3 boyutunda ise eleman sayısı (satırSayısı * sütunSayısı) formülü ile hesaplanmalı ve boyutu 12 olmalı.
-Bu durumda mayın sayısı 12 / 4 = 3 adet olmalıdır. (ipucu : bu mayınların konumlarını tutacak ikinci bir dizi oluşturabilirsiniz.)
-Kullanıcı matris üzerinden bir nokta seçmeli. Nokta seçimi için satır ve sütun değerlerini girmeli.
-Seçilen noktanın dizinin sınırları içerisinde olup olmadığını kontrol edilmeli ve koşul sağlanmazsa tekrar nokta istenmeli.
-Kullanıcının girdiği noktada mayın var ise oyunu kaybetmeli.
-Mayın yok ise, ilgili noktaya değen tüm konumlarına bakılmalı 
-(sağı, solu, yukarısı, aşağısı, sol üst çapraz, sağ üst çapraz, sağ alt çapraz,
-sol alt çapraz) ve etrafındaki mayınların sayısının toplamı ilgili noktaya yazılmalı. 
-Noktaya değen herhangi bir mayın yok ise "0" değeri atanmalı.
-Kullanıcı hiç bir mayına basmadan tüm noktaları seçebilirse oyunu kazanmalı.
-*/
 package bitirme.mayin.tarlasi;
-import java.util.Random;
 import java.util.Scanner;
 /**
  * @author ilyasBozdemir
  */
-
 public class MineSweeper {
     int rowNumber;
     int colNumber;
 
-    
-    private int elemanSayisi;  
-    private int mineCount;  
+    String[][] data;
+    String[][] mines;
+
+
+    private int elemanSayisi;
+    private int mineCount;
     private int safeZoneCount;
 
 
@@ -38,75 +21,202 @@ public class MineSweeper {
         colNumber = _colNumber;
         //
         elemanSayisi = rowNumber * colNumber;
-        mineCount = (elemanSayisi / 4);      
-        safeZoneCount = elemanSayisi-mineCount;
+        mineCount = (elemanSayisi / 4);
+        safeZoneCount = elemanSayisi - mineCount;
+        //
+        data = new String[rowNumber][colNumber];
+        mines = new String[rowNumber][colNumber];
         //
     }
 
-    public boolean mineControl(int row,int col) 
-    {
+    private boolean mineControl(int row, int col) {
+        boolean state = mines[row][col] == "*";
+        if (state) {
+            return true;
+        }
         return false;
     }
 
-    public void place_a_Mine()
-    {
-         Random rnd = new Random();
-         int konum = rnd.nextInt(colNumber * rowNumber);
-         int x = konum  / colNumber,
-             y = konum % colNumber;
-           
-         
-        
-    }
-    
-    public void showMine() //Mayınları Göster
-    {
-         System.out.println("Mayinlarin Konumu");
-         
+    private void place_a_Mine() {
+        int rndPoint = 0, x = 0, y = 0, i = 0;
+
+        int[] UniqueNumber = new int[mineCount];
+
+        while (i != mineCount) {
+            rndPoint = (int)(Math.random() * rowNumber * colNumber);
+
+            for (int j = 0; j < UniqueNumber.length; j++) {
+
+                if (rndPoint != UniqueNumber[j]) {
+                    UniqueNumber[i] = rndPoint;
+                    i++;
+                }
+            }
+        }
+
+        for (int j = 0; j < rowNumber; j++) {
+            for (int k = 0; k < colNumber; k++) {
+                for (int l = 0; l < UniqueNumber.length; l++) {
+
+                    x = UniqueNumber[l] / colNumber;
+                    y = UniqueNumber[l] % colNumber;
+
+                    if (x == j && y == k) {
+                        mines[j][k] = "*";
+                    } else {
+                        mines[j][k] = "-";
+                    }
+                }
+            }
+        }
+
+        //başta oyun alanını yaratmak adına
+        for (int j = 0; j < rowNumber; j++) {
+            for (int k = 0; k < colNumber; k++) {
+                data[j][k] = "-";
+            }
+        }
     }
 
-    public void printField()//Alani Yazdır
+    private void showMine() //Mayınları Göster
     {
-        
+        System.out.println("Mayinlarin Konumu");
+        for (int j = 0; j < rowNumber; j++) {
+            for (int k = 0; k < colNumber; k++) {
+                System.out.print(mines[j][k] + " ");
+            }
+            System.out.println();
+        }
     }
-    public void dataInput(int row,int col)//
+
+    private void printField() //Alani Yazdır
     {
-        
+        for (int j = 0; j < rowNumber; j++) {
+            for (int k = 0; k < colNumber; k++) {
+                System.out.print(data[j][k] + " ");
+            }
+            System.out.println();
+        }
     }
-    public void Run()//oyunun ana methodu
+
+    private boolean Top(int row, int col) {
+        
+        if (mines[row-1][col] == "*") {
+            return true;
+        }
+        return false;
+    }
+    private boolean Bottom(int row, int col) {
+       
+        if (mines[row+1][col] == "*") {
+            return true;
+        }
+        return false;
+    }
+    private boolean Left(int row, int col) {
+       
+        if (mines[row][col-1] == "*") {
+            return true;
+        }
+        return false;
+    }
+    private boolean Right(int row, int col) {
+       
+        if (mines[row][col+1] == "*") {
+            return true;
+        }
+        return false;
+    }
+
+    private boolean RightTop(int row, int col) {
+       
+        if (mines[row-1][col+1] == "*") {
+            return true;
+        }
+        return false;
+    }
+    private boolean LeftTop(int row, int col) {
+        
+        if (mines[row-1][col-1] == "*") {
+            return true;
+        }
+        return false;
+    }
+    private boolean RightBottom(int row, int col) {
+        
+        if (mines[row+1][col+1] == "*") {
+            return true;
+        }
+        return false;
+    }
+    private boolean LeftBottom(int row, int col) {
+       
+        if (mines[row+1][col-1] == "*") {
+            return true;
+        }
+        return false;
+    }
+
+
+    private void dataInput(int row, int col) //
+    {
+       int count = 0;
+       boolean[] durumlar= new boolean [8];
+       if (row - 1 >= 0 && row - 1 >= 0) {
+            if (col - 1 >= 0 && col - 1 >= 0) {
+                if (row + 1 >= rowNumber && row + 1 >= rowNumber) {
+                    if (col + 1 >= colNumber && col + 1 >= colNumber) {
+                        durumlar[0]= Top(row, col);    
+                        durumlar[1]= Bottom(row, col);
+                        durumlar[2]= Left(row, col);
+                        durumlar[3]= Right(row, col); 
+                        durumlar[4]= RightTop(row, col);
+                        durumlar[5]= LeftTop(row, col);
+                        durumlar[6]= RightBottom(row, col); 
+                        durumlar[7]= LeftBottom(row, col);
+                         for (var durum: durumlar) {
+                             if (durum) {
+                                 count++;
+                             }
+                         }
+                           data[row][col] = count + "";
+                    }
+                }
+            }
+        }
+       else  {
+        System.err.print("veri girme hatası");   
+       }  
+    }
+    public void Run() //oyunun ana methodu
     {
         Scanner input = new Scanner(System.in);
         int inputData = 0, row, col, count = 0;
-        
-        place_a_Mine();// mayınlari yerleştir
-        printField();// alanı ekrana yazdır.
-        
-        showMine();//mayınları göster
+
+        place_a_Mine(); // mayınlari yerleştir
+        showMine(); //mayınları göster
         System.out.println("===========================");
-        System.out.println("Mayin Tarlasi Oyununa Hoşgeldiniz !");
-        
-        while(count != safeZoneCount)
-        {
+        printField(); // alanı ekrana yazdır.
+        System.out.println("===========================");
+        System.out.println("Mayin Tarlasi Oyununa Hosgeldiniz !");
+
+        while (count != safeZoneCount) {
             // safeZoneCount yani mayınsız bolge sayısı kadar hakkımız var
             // count == safeZone durumunda oyunu kazanmış oluyor oyuncu
             count++;
-            System.out.print("Satır sayısını giriniz : ");
-            row=input.nextInt();
-            System.out.print("Sutun sayısını giriniz : ");
-            col=input.nextInt();
-            if (!mineControl(row,col)) 
-            {
-                dataInput(row,col);
+            System.out.print("Satır sayisini giriniz : ");
+            row = input.nextInt();
+            System.out.print("Sutun sayisini giriniz : ");
+            col = input.nextInt();
+            if (!mineControl(row, col)) {
+                dataInput(row, col);
                 printField();
+            } else {
+                System.out.print("Game Over!!");
+                break;
             }
-            else
-            {
-                 System.out.print("Game Over!!");
-                 break;
-            } 
         }
-        if (count == safeZoneCount) 
-        {
+        if (count == safeZoneCount) {
             System.out.print("Oyunu Kazandiniz !");
         }
     }
