@@ -38,21 +38,22 @@ public class MineSweeper {
     }
 
     private void place_a_Mine() {
-        int rndPoint = 0, x = 0, y = 0, i = 0;
+        int rndPoint = 0, x = 0, y = 0;
 
         int[] UniqueNumber = new int[mineCount];
 
-        while (i != mineCount) {
-            rndPoint = (int)(Math.random() * rowNumber * colNumber);
-
-            for (int j = 0; j < UniqueNumber.length; j++) {
-
-                if (rndPoint != UniqueNumber[j]) {
+        for (int i = 0; i < (rowNumber * colNumber); i++)
+            {
+                rndPoint = (rnd.Next(rowNumber * colNumber));
+                if (!UniqueNumber.Contains(rndPoint))
+                {
+                    if (index == mineCount)
+                        break;
                     UniqueNumber[i] = rndPoint;
-                    i++;
+                    index++;
                 }
+
             }
-        }
 
         for (int j = 0; j < rowNumber; j++) {
             for (int k = 0; k < colNumber; k++) {
